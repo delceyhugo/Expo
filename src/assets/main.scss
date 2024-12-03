@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&family=Noto+Serif+Display:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+/* Lexend Deca: Use a value from 100 to 900  */
+
+/* Noto Serif Display: Use a value from 100 to 900 */
+:root{
+  --color-dark: #191919;
+  --color-gray: #B1B1B1;
+}
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#app {
+  background: linear-gradient(145deg, #b5c3df 0%, #dbe3e1 100%);
+  // cursor: none;
+  overflow: hidden;
+  h1{
+    font-family: "Noto Serif Display", serif;
+    font-style: normal;
+  }
+  p {
+    font-family: "Lexend Deca", sans-serif;
+    font-style: normal;
+    font-size: 1em;
+  }
+  a{
+    text-decoration: none;
+    font-family: "Lexend Deca", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    color: var(--color-dark);
+    font-size: 20px;
+    
+    background: linear-gradient(to top, rgba(255, 255, 255, 0) 50%, var(--color-dark) 50%) bottom;
+    background-size: 100% 300%;
+    background-position: 50% 90%;
+    transition: .3s ease-out;
+    &:hover{
+      background-position: top;
+      color: var(--color-gray);
+    }
+  }
+  .paralax-container{
+    transition: all 100ms ease;
+  }
+}
