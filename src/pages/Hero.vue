@@ -62,7 +62,7 @@ defineEmits(['changePage'])
           </aside>
         </div>
         <div @click="$emit('changePage', 'archive')" id="art-archive" class="paralax-container cursor-link" data-paralax="95">
-          <img class="cursor-link" src="../assets/camera.png" alt="Camera">
+          <img class="cursor-link paralax-container" src="../assets/camera.png" alt="Camera" data-paralax="85">
           <p class="cursor-link">Art archive</p>
         </div>
       </footer>

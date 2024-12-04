@@ -3,6 +3,7 @@
 import { ref } from 'vue';
 
 const gallery = ref(null);
+const tabs = ref(2);
 
 const fields = [
     'id',
@@ -17,18 +18,39 @@ const fields = [
 // https://www.artic.edu/iiif/2/{identifier}/full/843,/0/default.jpg
 // <img :src="`https://www.artic.edu/iiif/2/${gallery.data[0].image_id}/full/500,/0/default.jpg`" :alt=gallery.data[0].title>
 
-fetch(`https://api.artic.edu/api/v1/artworks/search?q=roman&fields=${fields.join(',')}&limit=4`)
+const fetchData = (request) => {
+    fetch(`https://api.artic.edu/api/v1/artworks/search?q=${request}&fields=${fields.join(',')}&limit=4`)
     .then(response => response.json())
     .then(data => {
         gallery.value = data
-        console.log(data)
     });
+}
+const truncateString = (string, length) => {
+  if (string?.length > length) {
+    return `${string.slice(0, length)}...`;
+  } else return string;
+}
+
+fetchData('roman')
+
+
 
 </script>
 
 
 <template>
     <div id="archive" v-if="gallery">
+        <header>
+            <ul>
+                <h1>Art Archive</h1>
+                <li @click="tabs = 1, fetchData('ancientgreece')" :class="`cursor-link ${tabs == 1 ? 'active-section': null}`">Ancient Greece</li>
+                <li @click="tabs = 2, fetchData('roman')" :class="`cursor-link ${tabs == 2 ? 'active-section': null}`">Roman</li>
+                <li @click="tabs = 3, fetchData('vangogh')" :class="`cursor-link ${tabs == 3 ? 'active-section': null}`">Van Gogh</li>
+            </ul>
+            <li @click="$emit('changePage', 'hero')" class="cursor-link" href="">Home</li>
+        </header>
+
+
         <section id="first">
             <header>
                 <h2>{{ gallery.data[0].place_of_origin }}</h2>
@@ -55,7 +77,7 @@ fetch(`https://api.artic.edu/api/v1/artworks/search?q=roman&fields=${fields.join
             </main>
             <aside>
                 <p>
-                    {{ gallery.data[1].provenance_text }}
+                    {{ truncateString(gallery.data[1].provenance_text, 180) }}
                 </p>
             </aside>
             <footer>
@@ -69,14 +91,14 @@ fetch(`https://api.artic.edu/api/v1/artworks/search?q=roman&fields=${fields.join
         <section id="third">
             <header>
                 <h2>{{ gallery.data[2].place_of_origin }}</h2>
-                <h1>{{ gallery.data[2].title }}</h1>
+                <h1>{{ truncateString(gallery.data[2].title, 25) }}</h1>
             </header>
             <main>
                 <img :src="`https://www.artic.edu/iiif/2/${gallery.data[2].image_id}/full/500,/0/default.jpg`" :alt=gallery.data[2].title>
             </main>
             <aside>
                 <p>
-                    {{ gallery.data[2].provenance_text }}
+                    {{ truncateString(gallery.data[2].provenance_text, 100) }}
                 </p>
             </aside>
             <footer>
@@ -90,14 +112,14 @@ fetch(`https://api.artic.edu/api/v1/artworks/search?q=roman&fields=${fields.join
         <section id="fourth">
             <header>
                 <h2>{{ gallery.data[3].place_of_origin }}</h2>
-                <h1>{{ gallery.data[3].title }}</h1>
+                <h1>{{ truncateString(gallery.data[3].title, 25) }}</h1>
             </header>
             <main>
                 <img :src="`https://www.artic.edu/iiif/2/${gallery.data[3].image_id}/full/500,/0/default.jpg`" :alt=gallery.data[3].title>
             </main>
             <aside>
                 <p>
-                    {{ gallery.data[3].provenance_text }}
+                    {{ truncateString(gallery.data[3].provenance_text, 100) }}
                 </p>
             </aside>
             <footer>
@@ -121,12 +143,66 @@ fetch(`https://api.artic.edu/api/v1/artworks/search?q=roman&fields=${fields.join
     display: grid;
     z-index: 2;
     grid-template-areas: 
+        "header header header"
         "first second second"
         "first third fourth";
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: auto 1fr 1fr;
     grid-template-columns: 1fr 1fr 1fr;
     padding: 8px;
 
+
+    >header{
+        grid-area: header;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: space-between;
+        border: 2px solid #baa690;
+        border-radius: 30px;
+        color: #baa690;
+        ul{
+            display: flex;
+            flex-direction: row;
+            gap: 2px;
+            align-items: center;
+            h1{
+                font-family: "Lexend Deca", sans-serif;
+                font-style: normal;
+                font-size: 28px;
+                font-weight: 300;
+                text-transform: uppercase;
+                background-color: #333124;
+                border-radius: 30px;
+                padding: 4px 3vw;
+            }
+        }
+        li{
+            list-style: none;
+            border: 2px solid #baa690;
+            border-radius: 30px;
+            padding: 8px 3vw;
+            margin: 2px 2px;
+            cursor: pointer;
+            color: #baa690;
+            font-family: "Lexend Deca", sans-serif;
+            font-style: normal;
+            font-size: 18px;
+            font-weight: 300;
+            transition: all 200ms ease;
+            background: linear-gradient(to top, rgba(255, 255, 255, 0) 50%, #baa690 50%) bottom;
+            background-size: 100% 300%;
+            background-position: 50% 90%;
+            transition: .3s ease-out;
+            &:hover{
+            background-position: top;
+            color: var(--color-dark);
+            }
+            &.active-section{
+                background-color: #baa690;
+                color: var(--color-dark);
+            }
+        }
+    }
     
     section{
         margin: 8px;
@@ -177,6 +253,7 @@ fetch(`https://api.artic.edu/api/v1/artworks/search?q=roman&fields=${fields.join
         aside{
             p{
                 font-size: 20px;
+                text-overflow: ellipsis;
             }
         }
         footer{

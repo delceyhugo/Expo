@@ -6,9 +6,17 @@ import Archive from './pages/Archive.vue'
 // Components
 import Cursor from './components/Cursor.vue'
 
+const activePage = ref(["hero"])
+
 
 
 const changePage = (page) => {
+  activePage.value = [activePage.value[0], page]
+
+  const activePageEl = document.querySelector(`#${activePage.value[0]}`)
+  activePageEl.scrollIntoView({ behavior: "smooth", block: "center"})
+  console.log(activePage.value);
+
   // Animation
   document.querySelectorAll(`.page`).forEach((el) => {
     el.classList.add('change-page')
@@ -23,8 +31,10 @@ const changePage = (page) => {
   // Remove animation
   setTimeout(() => {
     document.querySelectorAll(`.page`).forEach((el) => {
-    el.classList.remove('change-page')
-  })
+      el.classList.remove('change-page')
+    })
+    activePage.value = [page]
+    console.log(activePage.value);
   }, 2000)
 }
 
@@ -33,7 +43,7 @@ const changePage = (page) => {
 <template>
   <Cursor />
   <Hero class="page" @changePage="changePage"/>
-  <Archive class="page"/>
+  <Archive class="page change-page" @changePage="changePage"/>
 </template>
 
 <style lang="scss" scoped>
