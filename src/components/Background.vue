@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, defineExpose } from 'vue'
 let canvas
 let ctx
 let divider
@@ -53,8 +53,9 @@ onMounted(() => {
 
 const init = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
-    canvas.width = window.innerWidth
-    canvas.height = window.innerHeight
+    canvas.width = canvas.parentNode.offsetWidth
+    canvas.height = canvas.parentNode.offsetHeight
+
     divider = Math.floor(window.innerWidth / 100);
     if (divider % 2 === 0) {
         divider++;
@@ -73,6 +74,7 @@ const init = () => {
 const DrawGrid = (fill, color, alpha) => {
     ctx.globalAlpha = alpha
     fill ? ctx.fillStyle = color : ctx.strokeStyle = color
+    fill ? canvas.style.zIndex = '99' : canvas.style.zIndex = '0'
 
     // Top
     let j = 0
@@ -139,6 +141,11 @@ const ClearLines = (j) => {
 
 
 
+defineExpose({
+    DrawGrid,
+    ClearGrid
+})
+
 
 
 
@@ -154,8 +161,6 @@ const ClearLines = (j) => {
 <style lang='scss' scoped>
 canvas{
     position: absolute;
-    width: 100vw;
-    height: 100vh;
     z-index: 0;
 }
 </style>

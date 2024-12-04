@@ -49,7 +49,6 @@ onMounted(() => {
     transform: translate(-50%, -50%) scale(.3);
     mix-blend-mode: difference;
     touch-action: none;
-
     &.cursor--link {
         border: 1px solid var(--color-gray);
     }
