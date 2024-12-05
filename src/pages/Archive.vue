@@ -1,6 +1,6 @@
 <script setup>
 
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 
 const gallery = ref(null);
 const tabs = ref(2);
@@ -17,6 +17,8 @@ const fields = [
 ]
 // https://www.artic.edu/iiif/2/{identifier}/full/843,/0/default.jpg
 // <img :src="`https://www.artic.edu/iiif/2/${gallery.data[0].image_id}/full/500,/0/default.jpg`" :alt=gallery.data[0].title>
+
+
 
 const fetchData = (request) => {
     fetch(`https://api.artic.edu/api/v1/artworks/search?q=${request}&fields=${fields.join(',')}&limit=4`)
@@ -237,11 +239,11 @@ fetchData('roman')
         main{
             position: relative;
             border-radius: 30px;
-            background-color: brown;
             display: flex;
             justify-content: center;
             overflow: hidden;
             width: 100%;
+            box-shadow: 4px 4px 10px 2px rgba(87, 82, 82, 0.5);
             img{
                 position: absolute;
                 height: 100%;

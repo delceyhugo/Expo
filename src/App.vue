@@ -15,7 +15,6 @@ const changePage = (page) => {
 
   const activePageEl = document.querySelector(`#${activePage.value[0]}`)
   activePageEl.scrollIntoView({ behavior: "smooth", block: "center"})
-  console.log(activePage.value);
 
   // Animation
   document.querySelectorAll(`.page`).forEach((el) => {
@@ -34,7 +33,6 @@ const changePage = (page) => {
       el.classList.remove('change-page')
     })
     activePage.value = [page]
-    console.log(activePage.value);
   }, 2000)
 }
 
@@ -43,7 +41,7 @@ const changePage = (page) => {
 <template>
   <Cursor />
   <Hero class="page" @changePage="changePage"/>
-  <Archive class="page change-page" @changePage="changePage"/>
+  <Archive class="page" @changePage="changePage"/>
 </template>
 
 <style lang="scss" scoped>
